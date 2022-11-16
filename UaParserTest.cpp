@@ -12,7 +12,7 @@
 
 namespace {
 
-const std::string UA_CORE_DIR = "./uap-core";
+const std::string UA_CORE_DIR = UA_CORE_ROOT;
 
 const uap_cpp::UserAgentParser g_ua_parser(UA_CORE_DIR + "/regexes.yaml");
 
