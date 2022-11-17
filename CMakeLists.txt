@@ -66,24 +66,25 @@ set_property(TARGET objlib PROPERTY POSITION_INDEPENDENT_CODE 1)
 # shared and static libraries built from the same object files
 add_library(uap-cpp-static STATIC $<TARGET_OBJECTS:objlib>)
 set_target_properties(uap-cpp-static PROPERTIES OUTPUT_NAME uaparser_cpp)
+target_link_libraries(uap-cpp-static PUBLIC yaml-cpp re2)
+target_compile_definitions(uap-cpp-static PUBLIC
+        UA_CORE_ROOT="${uap-core_SOURCE_DIR}"
+)
 
-add_library(uap-cpp-shared SHARED $<TARGET_OBJECTS:objlib>)
-set_target_properties(uap-cpp-shared PROPERTIES OUTPUT_NAME uaparser_cpp)
+#add_library(uap-cpp-shared SHARED $<TARGET_OBJECTS:objlib>)
+#set_target_properties(uap-cpp-shared PROPERTIES OUTPUT_NAME uaparser_cpp)
 
-
+#add_library(uap-cpp-core re2 yaml-cpp )
 
 set(TEST_SOURCES
         UaParserTest.cpp)
 
 #find_package(GTest)
 
-add_executable(tests ${TEST_SOURCES} $<TARGET_OBJECTS:objlib>)
+add_executable(tests ${TEST_SOURCES} #[[$<TARGET_OBJECTS:objlib>]])
 set_target_properties(tests PROPERTIES OUTPUT_NAME UaParserTest)
 
-target_link_libraries(tests re2 yaml-cpp gtest pthread)
-target_compile_definitions(tests PUBLIC
-        UA_CORE_ROOT="${uap-core_SOURCE_DIR}"
-)
+target_link_libraries(tests gtest pthread uap-cpp-static)
 
 
 #set(BENCH_SOURCES
