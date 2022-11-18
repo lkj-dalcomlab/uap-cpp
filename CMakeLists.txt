@@ -6,7 +6,8 @@ include(FetchContent)
 
 FetchContent_Declare(
         uap-core
-        URL https://github.com/ua-parser/uap-core/archive/refs/tags/v0.6.9.tar.gz
+        GIT_REPOSITORY https://github.com/ua-parser/uap-core.git
+        GIT_TAG v0.16.0
 )
 FetchContent_MakeAvailable(uap-core)
 
