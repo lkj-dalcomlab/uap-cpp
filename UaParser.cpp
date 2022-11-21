@@ -8,6 +8,7 @@
 #include <memory>
 #include <string>
 #include <vector>
+#include <iostream>
 
 #include "internal/AlternativeExpander.h"
 #include "internal/MakeUnique.h"
@@ -291,6 +292,10 @@ uap_cpp::Agent parse_os_impl(const std::string& ua, const UAStore* ua_store) {
 
 namespace uap_cpp {
 
+UserAgentParser::UserAgentParser() {
+    ua_store_ = nullptr;
+}
+
 UserAgentParser::UserAgentParser(const std::string& regexes_file_path)
     : regexes_file_path_{regexes_file_path} {
   ua_store_ = new UAStore(regexes_file_path);
@@ -300,7 +305,20 @@ UserAgentParser::~UserAgentParser() {
   delete static_cast<const UAStore*>(ua_store_);
 }
 
+bool UserAgentParser::open(const std::string &path) {
+  try {
+    ua_store_ = new UAStore(path);
+  } catch (std::runtime_error e) {
+    std::cout << e.what() << std::endl;
+    return false;
+  }
+  return true;
+}
+
 UserAgent UserAgentParser::parse(const std::string& ua) const noexcept {
+  if (ua_store_ == nullptr) {
+    return {Device(), Agent(), Agent()};
+  }
   const auto ua_store = static_cast<const UAStore*>(ua_store_);
 
   try {
