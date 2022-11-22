@@ -64,4 +64,5 @@ class UserAgentParser {
   const void* ua_store_;
 };
 
+using UserAgentParserPtr = std::unique_ptr<UserAgentParser>;
 }  // namespace uap_cpp
